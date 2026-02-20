@@ -48,9 +48,10 @@ app.use(fileUpload({
 app.get('/', (req, res) => {
   res.send('priyank sharma and sharma')
 })
-app.use(
-  cors()
-);
+app.use(cors({
+  origin: "https://course-selling-app-ashy.vercel.app",
+  credentials: true
+}))
 
 
 
