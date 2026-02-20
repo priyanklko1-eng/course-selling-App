@@ -13,16 +13,24 @@ import fileUpload from "express-fileupload";
 
 
 
-const DB_URI=process.env.MONGO_URI
+
 const app = express()
 const port = process.env.PORT || 3000
 
-try {
-    await mongoose.connect(DB_URI)
-    console.log("connected to mongodb")
-} catch (error) {
-    console.log(error)
-}
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB connected");
+
+    app.listen(process.env.PORT || 5000, () => {
+      console.log("Server started");
+    });
+  })
+  .catch((err) => {
+    console.log("MongoDB connection error:", err);
+  });
+
+
 app.use(express.json())
 app.use(cookieParser())
 
@@ -44,9 +52,7 @@ app.use(
   cors()
 );
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+
 
 app.use("/api/v1/course",CourseRoute)
 app.use("/api/v1/user",UserRoute)
